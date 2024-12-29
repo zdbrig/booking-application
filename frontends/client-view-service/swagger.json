@@ -1,0 +1,131 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Client View API",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "paths": {
+    "/client/{clientId}": {
+      "get": {
+        "summary": "Retrieve client information",
+        "description": "Retrieve client information",
+        "operationId": "getClient",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/client"
+            },
+            "description": "Client information"
+          },
+          "404": {
+            "description": "Client not found"
+          }
+        }
+      }
+    },
+    "/client/{clientId}/bookings": {
+      "get": {
+        "summary": "Retrieve client's past bookings",
+        "description": "Retrieve client's past bookings",
+        "operationId": "getClientBookings",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/booking"
+              }
+            },
+            "description": "Client's past bookings"
+          },
+          "404": {
+            "description": "Client not found"
+          }
+        }
+      }
+    },
+    "/client/{clientId}/upcoming_bookings": {
+      "get": {
+        "summary": "Retrieve client's upcoming bookings",
+        "description": "Retrieve client's upcoming bookings",
+        "operationId": "getClientUpcomingBookings",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/booking"
+              }
+            },
+            "description": "Client's upcoming bookings"
+          },
+          "404": {
+            "description": "Client not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "client": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      }
+    },
+    "booking": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "clientId": {
+          "type": "integer"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "service": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

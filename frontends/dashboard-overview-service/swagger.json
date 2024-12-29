@@ -1,0 +1,130 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Dashboard Service",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "paths": {
+    "/dashboard": {
+      "get": {
+        "summary": "Get dashboard data",
+        "description": "Retrieve calendars, clients, bookings, and room availability data for the dashboard",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Dashboard data",
+            "schema": {
+              "$ref": "#/definitions/dashboardResponse"
+            }
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "dashboardResponse": {
+      "type": "object",
+      "properties": {
+        "calendars": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/calendar"
+          }
+        },
+        "clients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/client"
+          }
+        },
+        "bookings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/booking"
+          }
+        },
+        "roomAvailability": {
+          "$ref": "#/definitions/roomAvailability"
+        }
+      }
+    },
+    "calendar": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "client": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "booking": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "clientId": {
+          "type": "integer"
+        },
+        "roomId": {
+          "type": "integer"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "roomAvailability": {
+      "type": "object",
+      "properties": {
+        "rooms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/room"
+          }
+        }
+      }
+    },
+    "room": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "available": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

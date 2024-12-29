@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert Random Rooms</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f2f5;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .status {
+            margin-top: 1rem;
+            display: none;
+        }
+        .success {
+            color: #4CAF50;
+        }
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-hotel"></i> Random Rooms Generator</h1>
+        <button onclick="insertRooms()">
+            <i class="fas fa-plus-circle"></i> Insert 30 Random Rooms
+        </button>
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        function insertRooms() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Inserting rooms...';
+            
+            fetch('/insert_rooms')
+                .then(response => response.json())
+                .then(data => {
+                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+                    statusDiv.className = 'status success';
+                })
+                .catch(error => {
+                    statusDiv.innerHTML = '<i class="fas fa-times-circle"></i> Error inserting rooms';
+                    statusDiv.className = 'status error';
+                });
+        }
+    </script>
+</body>
+</html>

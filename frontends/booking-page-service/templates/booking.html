@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Booking</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .user-info {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Block-GPT Guest House Booking</h1>
+        <p>Powered by Sqoin - Simplifying Microservices with Block-GPT</p>
+        <div class="user-info">
+            <p>Welcome, {{ user.name if user else 'Guest' }}</p>
+            {% if not user %}
+            <a href="/login">Login with Google</a>
+            {% endif %}
+        </div>
+    </div>
+</body>

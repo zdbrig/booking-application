@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Search</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .room-card {
+            transition: transform 0.3s;
+        }
+        .room-card:hover {
+            transform: translateY(-5px);
+        }
+        .search-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-5"><i class="fas fa-hotel"></i> Room Search</h1>
+        
+        <div class="search-form mb-5">
+            <form id="searchForm">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label"><i class="fas fa-calendar-alt"></i> Check-in Date</label>
+                        <input type="date" class="form-control" id="checkIn" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label"><i class="fas fa-calendar-alt"></i> Check-out Date</label>
+                        <input type="date" class="form-control" id="checkOut" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label"><i class="fas fa-user"></i> Adults</label>
+                        <select class="form-select" id="adults">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label"><i class="fas fa-child"></i> Children</label>
+                        <select class="form-select" id="children">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label"><i class="fas fa-bed"></i> Room Type</label>
+                        <select class="form-select" id="roomType">
+                            <option value="">All Types</option>
+                            <option value="standard">Standard</option>
+                            <option value="deluxe">Deluxe</option>
+                            <option value="suite">Suite</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search Rooms</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="roomResults" class="row g-4">
+            <!-- Room results will be dynamically inserted here -->
+        </div>
+
+        <!-- Booking Modal -->
+        <div class="modal fade" id="bookingModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Book Room</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="bookingForm">
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fas fa-user"></i> Full Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fas fa-phone"></i> Phone</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="booking-details"></div>
+                            <button type="submit" class="btn btn-primary w-100">Confirm Booking</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const roomResults = document.getElementById('roomResults');
+            const bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+            let selectedRoom = null;
+
+            // Set minimum date for check-in to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('checkIn').min = today;
+
+            // Update check-out minimum date when check-in is selected
+            document.getElementById('checkIn').addEventListener('change', function() {
+                document.getElementById('checkOut').min = this.value;
+            });
+
+            searchForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const response = await fetch('/api/rooms');
+                const rooms = await response.json();
+                
+                displayRooms(rooms);
+            });
+
+            function displayRooms(rooms) {
+                roomResults.innerHTML = rooms.map(room => `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card room-card h-100">
+                            <img src="${room.image}" class="card-img-top" alt="${room.type}" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">${room.type} Room</h5>
+                                <p class="card-text">${room.description}</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-dollar-sign"></i> Price: $${room.price}/night</li>
+                                    <li><i class="fas fa-users"></i> Max Occupancy: ${room.max_occupancy}</li>
+                                    <li><i class="fas fa-check-circle ${room.availability ? 'text-success' : 'text-danger'}"></i> 
+                                        ${room.availability ? 'Available' : 'Not Available'}
+                                    </li>
+                                </ul>
+                                <button class="btn btn-primary w-100" 
+                                        onclick="bookRoom(${JSON.stringify(room).replace(/"/g, '&quot;')})"
+                                        ${!room.availability ? 'disabled' : ''}>
+                                    <i class="fas fa-book"></i> Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            window.bookRoom = function(room) {
+                selectedRoom = room;
+                const checkIn = document.getElementById('checkIn').value;
+                const checkOut = document.getElementById('checkOut').value;
+                
+                document.querySelector('.booking-details').innerHTML = `
+                    <div class="alert alert-info">
+                        <p><strong>Room:</strong> ${room.type}</p>
+                        <p><strong>Check-in:</strong> ${checkIn}</p>
+                        <p><strong>Check-out:</strong> ${checkOut}</p>
+                        <p><strong>Total Price:</strong> $${calculatePrice(room.price, checkIn, checkOut)}</p>
+                    </div>
+                `;
+                
+                bookingModal.show();
+            };
+
+            document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const bookingData = {
+                    room_number: parseInt(selectedRoom.id),
+                    check_in: document.getElementById('checkIn').value,
+                    check_out: document.getElementById('checkOut').value,
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value
+                };
+
+                try {
+                    const response = await fetch('/api/book', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(bookingData)
+                    });
+
+                    if (response.ok) {
+                        alert('Booking successful!');
+                        bookingModal.hide();
+                        searchForm.dispatchEvent(new Event('submit'));
+                    } else {
+                        alert('Booking failed. Please try again.');
+                    }
+                } catch (error) {
+                    alert('An error occurred. Please try again.');
+                }
+            });
+
+            function calculatePrice(pricePerNight, checkIn, checkOut) {
+                const start = new Date(checkIn);
+                const end = new Date(checkOut);
+                const nights = (end - start) / (1000 * 60 * 60 * 24);
+                return (pricePerNight * nights).toFixed(2);
+            }
+
+            // Initial room load
+            searchForm.dispatchEvent(new Event('submit'));
+        });
+    </script>
+</body>
+</html>

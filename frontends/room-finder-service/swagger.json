@@ -1,0 +1,97 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Room Search Service",
+    "version": "1.0.0"
+  },
+  "basePath": "/room-search",
+  "paths": {
+    "/search": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Search for rooms",
+        "description": "Search for rooms based on provided parameters",
+        "operationId": "searchRooms",
+        "parameters": [
+          {
+            "name": "roomSearchForm",
+            "in": "body",
+            "description": "Room search form data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RoomSearchForm"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to search result page"
+          },
+          "400": {
+            "description": "Invalid search request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "RoomSearchForm": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+          "description": "Search location"
+        },
+        "checkinDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Checkin date"
+        },
+        "checkoutDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Checkout date"
+        },
+        "roomType": {
+          "type": "string",
+          "description": "Type of room (e.g. single, double, suite)"
+        },
+        "priceRange": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PriceRange"
+          },
+          "description": "Price range"
+        },
+        "amenities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Amenities (e.g. wifi, breakfast, parking)"
+        }
+      }
+    },
+    "PriceRange": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "integer",
+          "description": "Minimum price"
+        },
+        "max": {
+          "type": "integer",
+          "description": "Maximum price"
+        }
+      }
+    }
+  }
+}

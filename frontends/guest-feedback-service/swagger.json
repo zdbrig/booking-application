@@ -1,0 +1,80 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Guest Rating and Comment API",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "paths": {
+    "/guest/ratings": {
+      "get": {
+        "summary": "Retrieves a list of guest ratings",
+        "description": "Retrieves a list of guest ratings",
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GuestRating"
+              }
+            },
+            "description": "List of guest ratings"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    },
+    "/guest/comments": {
+      "get": {
+        "summary": "Retrieves a list of guest comments",
+        "description": "Retrieves a list of guest comments",
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GuestComment"
+              }
+            },
+            "description": "List of guest comments"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "GuestRating": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "rating": {
+          "type": "integer"
+        },
+        "guestName": {
+          "type": "string"
+        }
+      }
+    },
+    "GuestComment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "guestName": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

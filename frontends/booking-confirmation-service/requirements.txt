@@ -1,0 +1,5 @@
+pymongo 
+flask 
+matplotlib
+flask-cors 
+flask_restx

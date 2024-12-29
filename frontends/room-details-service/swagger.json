@@ -1,0 +1,74 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Room Service",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "paths": {
+    "/room/{roomId}": {
+      "get": {
+        "summary": "Retrieve detailed room information",
+        "description": "Retrieve detailed room information by providing the room ID",
+        "operationId": "getRoom",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "The ID of the room to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/room"
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "description": "Room not found"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "room": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "capacity": {
+          "type": "integer"
+        },
+        "location": {
+          "type": "string"
+        },
+        "equipment": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

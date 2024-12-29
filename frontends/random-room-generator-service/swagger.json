@@ -1,0 +1,83 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Insert Random Rooms",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "paths": {
+    "/insert_random_rooms": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Insert 30 random rooms with random images from the bucket",
+        "description": "Insert 30 random rooms with random images from the bucket",
+        "operationId": "insertRandomRooms",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "requestBody",
+            "description": "Request body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InsertRandomRoomsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/InsertRandomRoomsResponse"
+            },
+            "description": "Rooms inserted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "InsertRandomRoomsRequest": {
+      "type": "object",
+      "properties": {
+        "bucketName": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bucketName"
+      ]
+    },
+    "InsertRandomRoomsResponse": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Room"
+      }
+    },
+    "Room": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "imageUrl"
+      ]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Booking Page",
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "paths": {
+    "/booking_page/{room}": {
+      "get": {
+        "summary": "Displays the booking page for a specific room",
+        "description": "Displays the booking page for a specific room",
+        "operationId": "getBookingPage",
+        "parameters": [
+          {
+            "name": "room",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The room to book"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  }
+}

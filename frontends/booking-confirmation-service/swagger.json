@@ -1,0 +1,59 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Booking Confirmation Service",
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "paths": {
+    "/booking Confirmation/{bookingId}": {
+      "get": {
+        "summary": "Displays booking confirmation page",
+        "description": "Displays booking confirmation page with a link to print as voucher pdf",
+        "operationId": "getBookingConfirmation",
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    },
+    "/printVoucher/{bookingId}": {
+      "get": {
+        "summary": "Prints booking confirmation as voucher pdf",
+        "description": "Prints booking confirmation as voucher pdf",
+        "operationId": "printVoucher",
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/pdf"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  }
+}

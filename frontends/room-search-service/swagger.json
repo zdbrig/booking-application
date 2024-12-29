@@ -1,0 +1,131 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Room Search Service",
+    "version": "1.0.0"
+  },
+  "basePath": "/room-search",
+  "paths": {
+    "/search": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Search for available rooms",
+        "description": "Search for available rooms with detailed search form",
+        "operationId": "searchRooms",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "searchForm",
+            "description": "Detailed search form",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/searchForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/searchResponse"
+            },
+            "description": "Rooms found"
+          },
+          "400": {
+            "description": "Invalid search form"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "searchForm": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "roomType": {
+          "type": "string",
+          "enum": [
+            "single",
+            "double",
+            "suite"
+          ]
+        },
+        "adults": {
+          "type": "integer"
+        },
+        "children": {
+          "type": "integer"
+        },
+        "amenities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "wifi",
+              "parking",
+              "breakfast"
+            ]
+          }
+        }
+      },
+      "required": [
+        "location",
+        "startDate",
+        "endDate",
+        "roomType"
+      ]
+    },
+    "searchResponse": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/roomDetails"
+      }
+    },
+    "roomDetails": {
+      "type": "object",
+      "properties": {
+        "roomId": {
+          "type": "integer"
+        },
+        "roomType": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "availability": {
+          "type": "boolean"
+        },
+        "amenities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "wifi",
+              "parking",
+              "breakfast"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

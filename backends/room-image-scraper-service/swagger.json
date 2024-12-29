@@ -1,0 +1,47 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hotel Room Image Scraper",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "paths": {
+    "/scrap_and_upload_images": {
+      "post": {
+        "summary": "Scrap hotel room images from internet and upload to Minio",
+        "description": "Scrap hotel room images from internet using SerpApi, upload to Minio and update room images",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "SerpApi-Key",
+            "description": "SerpApi API Key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Images successfully uploaded and updated"
+          },
+          "500": {
+            "description": "Error while scraping or uploading images"
+          }
+        }
+      }
+    }
+  },
+  "host": "hotel-room-image-scraper.io",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "SerpApi-Key": {
+      "type": "apiKey",
+      "name": "SerpApi-Key",
+      "in": "header"
+    }
+  }
+}

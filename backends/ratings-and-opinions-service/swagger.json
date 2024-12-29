@@ -1,0 +1,165 @@
+{
+  "swagger": "2.0",
+  "basePath": "/",
+  "paths": {
+    "/ratings/generate-ratings": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "room": {
+                    "$ref": "#/definitions/Room"
+                  },
+                  "ratings": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Rating"
+                    }
+                  },
+                  "average_rating": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post_generate_ratings",
+        "tags": [
+          "ratings"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "API",
+    "version": "1.0"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "tags": [
+    {
+      "name": "ratings"
+    }
+  ],
+  "definitions": {
+    "Room": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Room ID"
+        },
+        "number": {
+          "type": "string",
+          "description": "Room number"
+        },
+        "type": {
+          "type": "string",
+          "description": "Room type"
+        },
+        "description": {
+          "type": "string",
+          "description": "Room description"
+        },
+        "price": {
+          "type": "number",
+          "description": "Room price per night"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Room image URLs"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoomOption"
+          },
+          "description": "Room options"
+        }
+      },
+      "required": [
+        "description",
+        "number",
+        "price",
+        "type"
+      ]
+    },
+    "RoomOption": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Option name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Option description"
+        }
+      },
+      "required": [
+        "name",
+        "description"
+      ]
+    },
+    "Rating": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Rating ID",
+          "readOnly": true
+        },
+        "room_id": {
+          "type": "string",
+          "description": "Room ID"
+        },
+        "guest_id": {
+          "type": "string",
+          "description": "Guest ID"
+        },
+        "rating": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Rating value"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Review comment"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Rating timestamp",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "guest_id",
+        "rating",
+        "room_id"
+      ]
+    }
+  },
+  "responses": {
+    "ParseError": {
+      "description": "When a mask can't be parsed"
+    },
+    "MaskError": {
+      "description": "When any error occurs on mask"
+    }
+  }
+}

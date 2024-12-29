@@ -1,0 +1,5 @@
+pymongo 
+flask 
+flask-cors 
+flask_restx
+requests

@@ -1,0 +1,55 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Room Image Updater",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "paths": {
+    "/scrape-and-upload-images": {
+      "post": {
+        "summary": "Scrape hotel room images from internet and upload to MinIO",
+        "description": "Scrape hotel room images from internet and upload to MinIO",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "body",
+            "required": true,
+            "type": "string",
+            "description": "SerpApi key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Images uploaded successfully"
+          },
+          "500": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Error occurred during image upload"
+          }
+        }
+      }
+    }
+  }
+}

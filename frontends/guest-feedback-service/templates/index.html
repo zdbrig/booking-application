@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Ratings & Comments</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .ratings-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .rating-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .rating-card:hover {
+            transform: translateY(-5px);
+        }
+        .rating-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .rating-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffa500;
+            margin-right: 10px;
+        }
+        .stars {
+            color: #ffd700;
+        }
+        .comment {
+            color: #666;
+            line-height: 1.5;
+        }
+        .room-info {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+            color: #666;
+        }
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Block-GPT Guest House Booking Powered by Sqoin</h1>
+        <p>Simplifying Microservices with Block-GPT</p>
+    </div>
+
+    <div class="container">
+        <h1><i class="fas fa-star"></i> Guest Ratings & Comments</h1>
+        <div id="ratings" class="ratings-container">
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i> Loading ratings...
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Sqoin</p>
+        <p>Built with Block-GPT: The Smart Microservice Generator. Revolutionizing applications one block at a time.</p>
+    </div>
+
+    <script>
+        function getStars(score) {
+            const fullStars = Math.floor(score);
+            const halfStar = score % 1 >= 0.5;
+            let starsHtml = '';
+            
+            for(let i = 0; i < fullStars; i++) {
+                starsHtml += '<i class="fas fa-star"></i>';
+            }
+            if(halfStar) {
+                starsHtml += '<i class="fas fa-star-half-alt"></i>';
+            }
+            const emptyStars = 5 - Math.ceil(score);
+            for(let i = 0; i < emptyStars; i++) {
+                starsHtml += '<i class="far fa-star"></i>';
+            }
+            return starsHtml;
+        }
+
+        function displayRatings(ratings) {
+            const container = document.getElementById('ratings');
+            container.innerHTML = '';
+            
+            ratings.forEach(rating => {
+                const card = document.createElement('div');
+                card.className = 'rating-card';
+                card.innerHTML = `
+                    <div class="room-info">Room ${rating.room_id}</div>
+                    <div class="rating-header">
+                        <div class="rating-score">${rating.rating.toFixed(1)}</div>
+                        <div class="stars">${getStars(rating.rating)}</div>
+                    </div>
+                    <div class="comment">${rating.comment}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        fetch('/ratings')
+            .then(response => response.json())
+            .then(data => {
+                displayRatings(data);
+            })
+            .catch(error => {
+                document.getElementById('ratings').innerHTML = `
+                    <div class="loading">
+                        <i class="fas fa-exclamation-circle"></i> Error loading ratings
+                    </div>
+                `;
+            });
+    </script>
+</body>
+</html>

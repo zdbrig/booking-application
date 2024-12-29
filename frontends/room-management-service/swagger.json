@@ -1,0 +1,167 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Room Management",
+    "version": "1.0.0"
+  },
+  "basePath": "/room-management",
+  "paths": {
+    "/rooms": {
+      "get": {
+        "summary": "Retrieves a list of all rooms",
+        "description": "Retrieves a list of all rooms",
+        "operationId": "getRooms",
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/room"
+              }
+            },
+            "description": "List of rooms"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new room",
+        "description": "Creates a new room",
+        "operationId": "createRoom",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "room",
+            "description": "The room to create",
+            "schema": {
+              "$ref": "#/definitions/room"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/room"
+            },
+            "description": "Room created successfully"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    },
+    "/rooms/{roomId}": {
+      "get": {
+        "summary": "Retrieves a room by ID",
+        "description": "Retrieves a room by ID",
+        "operationId": "getRoom",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roomId",
+            "required": true,
+            "type": "integer",
+            "description": "The ID of the room to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/room"
+            },
+            "description": "Room retrieved successfully"
+          },
+          "404": {
+            "description": "Room not found"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Updates a room",
+        "description": "Updates a room",
+        "operationId": "updateRoom",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roomId",
+            "required": true,
+            "type": "integer",
+            "description": "The ID of the room to update"
+          },
+          {
+            "in": "body",
+            "name": "room",
+            "description": "The updated room",
+            "schema": {
+              "$ref": "#/definitions/room"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/room"
+            },
+            "description": "Room updated successfully"
+          },
+          "404": {
+            "description": "Room not found"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a room",
+        "description": "Deletes a room",
+        "operationId": "deleteRoom",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roomId",
+            "required": true,
+            "type": "integer",
+            "description": "The ID of the room to delete"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Room deleted successfully"
+          },
+          "404": {
+            "description": "Room not found"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "room": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
